@@ -1,0 +1,4 @@
+# .gitattributes
+PharmaBD/auto.cnf -text
+PharmaBD/binlog.index -text
+PharmaBD/ib_buffer_pool -text
