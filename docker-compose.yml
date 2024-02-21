@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: bd_humilde
+    environment:
+      MYSQL_ROOT_PASSWORD: pharma
+      MYSQL_DATABASE: pharma_database
+      MYSQL_USER: humilde
+      MYSQL_PASSWORD: pharma
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./PharmaBD:/var/lib/mysql
