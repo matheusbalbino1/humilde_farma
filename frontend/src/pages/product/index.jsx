@@ -5,6 +5,9 @@ const ProductPage = () => {
     <main>
       <div>
         <h1>Cadastro e controle de produtos</h1>
+        <div class="container-button-add">
+          <button>Adicionar produto</button>
+        </div>
         <table>
           <thead>
             <tr>
@@ -13,8 +16,6 @@ const ProductPage = () => {
               <th>Quantidade</th>
               <th>Descrição</th>
               <th>Preço</th>
-              <th>Editar</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -27,12 +28,6 @@ const ProductPage = () => {
                 produto 1 Descrição do produto 1 Descrição do produto 1
               </td>
               <td>R$ 100,00</td>
-              <td>
-                <button>Editar</button>
-              </td>
-              <td>
-                <button className="button-danger">Apagar</button>
-              </td>
             </tr>
             <tr>
               <td>1</td>
@@ -43,12 +38,6 @@ const ProductPage = () => {
                 produto 1 Descrição do produto 1 Descrição do produto 1
               </td>
               <td>R$ 100,00</td>
-              <td>
-                <button>Editar</button>
-              </td>
-              <td>
-                <button className="button-danger">Apagar</button>
-              </td>
             </tr>
             <tr>
               <td>1</td>
@@ -59,12 +48,6 @@ const ProductPage = () => {
                 produto 1 Descrição do produto 1 Descrição do produto 1
               </td>
               <td>R$ 100,00</td>
-              <td>
-                <button>Editar</button>
-              </td>
-              <td>
-                <button className="button-danger">Apagar</button>
-              </td>
             </tr>
             <tr>
               <td>1</td>
@@ -75,12 +58,6 @@ const ProductPage = () => {
                 produto 1 Descrição do produto 1 Descrição do produto 1
               </td>
               <td>R$ 100,00</td>
-              <td>
-                <button>Editar</button>
-              </td>
-              <td>
-                <button className="button-danger">Apagar</button>
-              </td>
             </tr>
           </tbody>
         </table>

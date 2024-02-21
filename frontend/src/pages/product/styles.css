@@ -19,7 +19,7 @@ main h1::after {
   left: 0;
 }
 
-main div {
+main > div {
   padding: 0 32px;
 }
 
@@ -44,6 +44,31 @@ main table tr button {
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.container-button-add {
+  margin-bottom: 16px;
+}
+
+.container-button-add button {
+  margin-left: auto;
+  display: block;
+  border: none;
+  padding: 8px 16px;
+  background-color: #ff4d4f;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.container-button-add button:hover {
+  background-color: #ff7875;
+  color: #fff;
+}
+
+.container-button-add button:active {
+  background-color: #ff4d4f;
+  color: #fff;
 }
 
 .button-danger:hover {

@@ -1,0 +1,4 @@
+# .gitignore
+
+# Volumes do Docker
+PharmaBD
