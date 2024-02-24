@@ -12,6 +12,6 @@ Para rodar o Back End
 - Pelo terminal entrar na pasta do humilde_farma e rodar "git checkout master"
 - Pelo terminal entrar na pasta do humilde_farma e rodar "git pull"
 - Pelo terminal entrar na pasta do backend e rodar "pip install flask"
-- Pelo terminal entrar na pasta do backend e rodar "pip instal flask_cors"
+- Pelo terminal entrar na pasta do backend e rodar "pip install flask_cors"
 - Pelo terminal entrar na pasta do backend e rodar "python main.py"
 
