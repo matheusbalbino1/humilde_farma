@@ -81,3 +81,12 @@ main table tr button {
   background-color: #ff4d4f;
   color: #fff;
 }
+
+.MuiDialog-container .MuiPaper-root {
+  width: 600px;
+  padding: 2rem;
+}
+
+.MuiDialog-container .MuiPaper-root button {
+  background-color: #ff4d4f;
+}

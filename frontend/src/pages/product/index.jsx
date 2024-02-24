@@ -1,12 +1,55 @@
+import { Button, TextField } from "@mui/material";
 import "./styles.css";
+import Dialog from "@mui/material/Dialog";
+import { useEffect, useState } from "react";
 
 const ProductPage = () => {
+  const [openModal, setOpenModal] = useState(false);
+  const [dadosBackEnd, setDadosBackEnd] = useState("");
+
+  function pegarDadosDoBackEnd() {
+    fetch("http://localhost:5000/api/produtos")
+      .then((response) => response.json())
+      .then((data) => setDadosBackEnd(data));
+  }
+
+  function enviarDadosParaBackEnd() {
+    fetch("http://localhost:5000/api/produtos/1", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nome: "Produto 1",
+        quantidade: 10,
+        descricao: "Descrição do produto 1",
+        preco: 100,
+      }),
+    });
+  }
+
+  useEffect(() => {
+    pegarDadosDoBackEnd();
+    enviarDadosParaBackEnd();
+  }, []);
+
   return (
     <main>
       <div>
         <h1>Cadastro e controle de produtos</h1>
+        <div>
+          {" "}
+          <h1>{dadosBackEnd}</h1>
+        </div>
+
         <div class="container-button-add">
-          <button>Adicionar produto</button>
+          <button
+            onClick={() => {
+              setOpenModal(true);
+            }}
+          >
+            Adicionar produto
+          </button>
         </div>
         <table>
           <thead>
@@ -62,6 +105,33 @@ const ProductPage = () => {
           </tbody>
         </table>
       </div>
+      <Dialog
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        style={{ padding: "2rem" }}
+      >
+        <TextField
+          label="Nome"
+          variant="outlined"
+          style={{ marginBottom: "1rem" }}
+        />
+        <TextField
+          label="Quantidade"
+          variant="outlined"
+          style={{ marginBottom: "1rem" }}
+        />
+        <TextField
+          label="Descrição"
+          variant="outlined"
+          style={{ marginBottom: "1rem" }}
+        />
+        <TextField
+          label="Preço"
+          variant="outlined"
+          style={{ marginBottom: "1rem" }}
+        />
+        <Button variant="contained">Criar</Button>
+      </Dialog>
     </main>
   );
 };
