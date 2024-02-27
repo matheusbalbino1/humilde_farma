@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const ProductPage = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [dadosBackEnd, setDadosBackEnd] = useState("");
+  const [dadosBackEnd, setDadosBackEnd] = useState([]);
 
   function pegarDadosDoBackEnd() {
     fetch("http://localhost:5000/api/produtos")
@@ -14,7 +14,7 @@ const ProductPage = () => {
   }
 
   function enviarDadosParaBackEnd() {
-    fetch("http://localhost:5000/api/produtos/1", {
+    fetch("http://localhost:5000/api/produtos/5", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ const ProductPage = () => {
         nome: "Produto 1",
         quantidade: 10,
         descricao: "Descrição do produto 1",
-        preco: 100,
+        preco: 1000,
       }),
     });
   }
@@ -32,17 +32,16 @@ const ProductPage = () => {
     pegarDadosDoBackEnd();
     enviarDadosParaBackEnd();
   }, []);
-
+  console.log(dadosBackEnd)
   return (
     <main>
       <div>
         <h1>Cadastro e controle de produtos</h1>
         <div>
           {" "}
-          <h1>{dadosBackEnd}</h1>
         </div>
 
-        <div class="container-button-add">
+        <div className="container-button-add">
           <button
             onClick={() => {
               setOpenModal(true);
@@ -62,46 +61,16 @@ const ProductPage = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Produto 1</td>
-              <td>10</td>
-              <td>
-                Descrição do produto 1 Descrição do produto 1 Descrição do
-                produto 1 Descrição do produto 1 Descrição do produto 1
-              </td>
-              <td>R$ 100,00</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>Produto 1</td>
-              <td>10</td>
-              <td>
-                Descrição do produto 1 Descrição do produto 1 Descrição do
-                produto 1 Descrição do produto 1 Descrição do produto 1
-              </td>
-              <td>R$ 100,00</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>Produto 1</td>
-              <td>10</td>
-              <td>
-                Descrição do produto 1 Descrição do produto 1 Descrição do
-                produto 1 Descrição do produto 1 Descrição do produto 1
-              </td>
-              <td>R$ 100,00</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>Produto 1</td>
-              <td>10</td>
-              <td>
-                Descrição do produto 1 Descrição do produto 1 Descrição do
-                produto 1 Descrição do produto 1 Descrição do produto 1
-              </td>
-              <td>R$ 100,00</td>
-            </tr>
+           {dadosBackEnd.map((produto,index)=>{
+            return(<tr key={index}>
+              <td>{produto.id}</td>
+              <td>{produto.nome}</td>
+              <td>{produto.quantidade}</td>
+              <td>{produto.descricao}</td>
+              <td>{produto.preco}</td>              
+            </tr>)
+            })}
+            
           </tbody>
         </table>
       </div>
