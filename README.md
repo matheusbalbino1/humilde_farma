@@ -15,3 +15,8 @@ Para rodar o Back End
 - Pelo terminal entrar na pasta do backend e rodar "pip install flask_cors"
 - Pelo terminal entrar na pasta do backend e rodar "python main.py"
 
+Para rodar o Banco de dados
+- Instalar o docker
+- Entrar no aplicativo docker
+- Pelo terminal entrar na pasta humilde_farma e no mesmo diretorio do 'docker-compose.yml'...
+- Dar o comando "docker compose up"
