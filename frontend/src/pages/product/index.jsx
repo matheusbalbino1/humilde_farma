@@ -6,6 +6,12 @@ import { useEffect, useState } from "react";
 const ProductPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [dadosBackEnd, setDadosBackEnd] = useState([]);
+  const [novoProduto, setNovoProduto] = useState({
+    nome: "",
+    quantidade: "",
+    descricao: "",
+    preco: ""
+  });
 
   function pegarDadosDoBackEnd() {
     fetch("http://localhost:5000/api/produtos")
@@ -14,41 +20,46 @@ const ProductPage = () => {
   }
 
   function enviarDadosParaBackEnd() {
-    fetch("http://localhost:5000/api/produtos/5", {
-      method: "PATCH",
+    fetch("http://localhost:5000/api/produtos", {
+      method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        nome: "Produto 1",
-        quantidade: 10,
-        descricao: "Descrição do produto 1",
-        preco: 1000,
-      }),
-    });
+      body: JSON.stringify(novoProduto)
+    })
+      .then(() => {
+        pegarDadosDoBackEnd();
+        setOpenModal(false);
+      })
+      .catch((error) => {
+        console.error("Erro ao adicionar produto:", error);
+      });
   }
 
   useEffect(() => {
     pegarDadosDoBackEnd();
-    enviarDadosParaBackEnd();
   }, []);
-  console.log(dadosBackEnd)
+
+  useEffect(() => {
+    if (openModal) {
+      // Limpar os campos quando a caixa de diálogo for aberta
+      setNovoProduto({
+        nome: "",
+        quantidade: "",
+        descricao: "",
+        preco: ""
+      });
+    }
+  }, [openModal]);
+
   return (
     <main>
       <div>
         <h1>Cadastro e controle de produtos</h1>
-        <div>
-          {" "}
-        </div>
+        <div></div>
 
         <div className="container-button-add">
-          <button
-            onClick={() => {
-              setOpenModal(true);
-            }}
-          >
-            Adicionar produto
-          </button>
+          <button onClick={() => setOpenModal(true)}>Adicionar produto</button>
         </div>
         <table>
           <thead>
@@ -61,16 +72,17 @@ const ProductPage = () => {
             </tr>
           </thead>
           <tbody>
-           {dadosBackEnd.map((produto,index)=>{
-            return(<tr key={index}>
-              <td>{produto.id}</td>
-              <td>{produto.nome}</td>
-              <td>{produto.quantidade}</td>
-              <td>{produto.descricao}</td>
-              <td>{produto.preco}</td>              
-            </tr>)
+            {dadosBackEnd.map((produto, index) => {
+              return (
+                <tr key={index}>
+                  <td>{produto.id}</td>
+                  <td>{produto.nome}</td>
+                  <td>{produto.quantidade}</td>
+                  <td>{produto.descricao}</td>
+                  <td>{produto.preco}</td>
+                </tr>
+              );
             })}
-            
           </tbody>
         </table>
       </div>
@@ -83,23 +95,41 @@ const ProductPage = () => {
           label="Nome"
           variant="outlined"
           style={{ marginBottom: "1rem" }}
+          value={novoProduto.nome}
+          onChange={(e) =>
+            setNovoProduto({ ...novoProduto, nome: e.target.value })
+          }
         />
         <TextField
           label="Quantidade"
           variant="outlined"
           style={{ marginBottom: "1rem" }}
+          value={novoProduto.quantidade}
+          onChange={(e) =>
+            setNovoProduto({ ...novoProduto, quantidade: e.target.value })
+          }
         />
         <TextField
           label="Descrição"
           variant="outlined"
           style={{ marginBottom: "1rem" }}
+          value={novoProduto.descricao}
+          onChange={(e) =>
+            setNovoProduto({ ...novoProduto, descricao: e.target.value })
+          }
         />
         <TextField
           label="Preço"
           variant="outlined"
           style={{ marginBottom: "1rem" }}
+          value={novoProduto.preco}
+          onChange={(e) =>
+            setNovoProduto({ ...novoProduto, preco: e.target.value })
+          }
         />
-        <Button variant="contained">Criar</Button>
+        <Button variant="contained" onClick={enviarDadosParaBackEnd}>
+          Criar
+        </Button>
       </Dialog>
     </main>
   );
