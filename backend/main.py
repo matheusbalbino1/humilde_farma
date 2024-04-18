@@ -1,9 +1,10 @@
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
-from db_connection import criar_conexao
+from db_connection import criar_conexao, criar_tabela
 
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route('/api/produtos', methods=['GET'])
 def obter_produtos():
@@ -20,15 +21,17 @@ def obter_produtos():
         resultados = cursor.fetchall()
 
         # Construir uma lista de dicionários para representar os produtos
-        produtos = [{'id': row[0], 'nome': row[1], 'quantidade': row[2], 'preco': row[3], 'descricao': row[4]} for row in resultados]
+        produtos = [{'id': row[0], 'nome': row[1], 'quantidade': row[2],
+                     'preco': row[3], 'descricao': row[4]} for row in resultados]
 
-         # Configurar o cabeçalho de resposta para indicar UTF-8
+        # Configurar o cabeçalho de resposta para indicar UTF-8
         resposta = jsonify(produtos)
         resposta.headers['Content-Type'] = 'application/json; charset=utf-8'
         # Retornar os produtos como JSON
         return resposta
     except Exception as e:
-        return jsonify({"mensagem": f"Erro ao obter produtos: {str(e)}"}), 500  # Código 500 significa Internal Server Error
+        # Código 500 significa Internal Server Error
+        return jsonify({"mensagem": f"Erro ao obter produtos: {str(e)}"}), 500
     finally:
         # Fechar o cursor e a conexão, independentemente de ter ocorrido um erro ou não
         cursor.close()
@@ -36,7 +39,6 @@ def obter_produtos():
 
     if __name__ == '__main__':
         app.run(debug=True)
-    #return jsonify("TESTE bd")
 
 
 @app.route('/api/produtos', methods=['POST'])
@@ -58,11 +60,13 @@ def criar_produto():
         conexao.commit()
 
         # Retornar uma resposta de sucesso
-        return jsonify({"mensagem": "Produto criado com sucesso!"}), 201  # Código 201 significa Created
+        # Código 201 significa Created
+        return jsonify({"mensagem": "Produto criado com sucesso!"}), 201
     except Exception as e:
         # Em caso de erro, fazer rollback e retornar mensagem de erro
         conexao.rollback()
-        return jsonify({"mensagem": f"Erro ao criar produto: {str(e)}"}), 500  # Código 500 significa Internal Server Error
+        # Código 500 significa Internal Server Error
+        return jsonify({"mensagem": f"Erro ao criar produto: {str(e)}"}), 500
     finally:
         # Fechar o cursor e a conexão, independentemente de ter ocorrido um erro ou não
         cursor.close()
@@ -81,7 +85,30 @@ def alterar_produto(id):
     descricao = request.json['descricao']
     # CONECTAR AO BANCO DE DADOS E ALTERAR O PRODUTO
 
-    return jsonify("TESTE 231")
+    try:
+        # Conectar ao banco de dados
+        conexao = criar_conexao()
+        cursor = conexao.cursor()
+
+        # Inserir novo produto na tabela
+        cursor.execute("UPDATE product SET nome=%s, preco=%s, quantidade=%s, descricao=%s WHERE id=%s",
+                       (nome, preco, quantidade, descricao, id_do_produto))
+
+        # Commit para salvar as alterações no banco de dados
+        conexao.commit()
+
+        # Retornar uma resposta de sucesso
+        # Código 201 significa Created
+        return jsonify({"mensagem": "Produto editado com sucesso!"}), 201
+    except Exception as e:
+        # Em caso de erro, fazer rollback e retornar mensagem de erro
+        conexao.rollback()
+        # Código 500 significa Internal Server Error
+        return jsonify({"mensagem": f"Erro ao editar produto: {str(e)}"}), 500
+    finally:
+        # Fechar o cursor e a conexão, independentemente de ter ocorrido um erro ou não
+        cursor.close()
+        conexao.close()
 
 
 @app.route('/api/produtos/<id>', methods=['DELETE'])
@@ -112,4 +139,5 @@ def sobre():
 
 
 if __name__ == '__main__':
+    criar_tabela()
     app.run(debug=True)

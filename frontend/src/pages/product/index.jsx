@@ -1,56 +1,97 @@
-import { Button, TextField } from "@mui/material";
-import "./styles.css";
-import Dialog from "@mui/material/Dialog";
-import { useEffect, useState } from "react";
+import { Button, TextField } from "@mui/material"
+import "./styles.css"
+import Dialog from "@mui/material/Dialog"
+import { useEffect, useState } from "react"
 
 const ProductPage = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [dadosBackEnd, setDadosBackEnd] = useState([]);
+  const [openModal, setOpenModal] = useState(false)
+  const [dadosBackEnd, setDadosBackEnd] = useState([])
   const [novoProduto, setNovoProduto] = useState({
+    id: "",
     nome: "",
     quantidade: "",
     descricao: "",
-    preco: ""
-  });
+    preco: "",
+  })
 
   function pegarDadosDoBackEnd() {
     fetch("http://localhost:5000/api/produtos")
       .then((response) => response.json())
-      .then((data) => setDadosBackEnd(data));
+      .then((data) => setDadosBackEnd(data))
   }
 
   function enviarDadosParaBackEnd() {
+    if (novoProduto.id) {
+      editarProdutoNoBackEnd()
+    } else {
+      criarProdutoNoBackEnd()
+    }
+  }
+
+  function criarProdutoNoBackEnd() {
     fetch("http://localhost:5000/api/produtos", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(novoProduto)
+      body: JSON.stringify(novoProduto),
     })
       .then(() => {
-        pegarDadosDoBackEnd();
-        setOpenModal(false);
+        pegarDadosDoBackEnd()
+        setOpenModal(false)
+        setNovoProduto({
+          nome: "",
+          quantidade: "",
+          descricao: "",
+          preco: "",
+          id: "",
+        })
       })
       .catch((error) => {
-        console.error("Erro ao adicionar produto:", error);
-      });
+        console.error("Erro ao adicionar produto:", error)
+      })
   }
 
-  useEffect(() => {
-    pegarDadosDoBackEnd();
-  }, []);
+  function editarProdutoNoBackEnd() {
+    fetch(`http://localhost:5000/api/produtos/${novoProduto.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(novoProduto),
+    })
+      .then(() => {
+        pegarDadosDoBackEnd()
+        setOpenModal(false)
+        setNovoProduto({
+          nome: "",
+          quantidade: "",
+          descricao: "",
+          preco: "",
+          id: "",
+        })
+      })
+      .catch((error) => {
+        console.error("Erro ao editar produto:", error)
+      })
+  }
+
+  function chamadaAoClicarNoBotaoEditar(produto) {
+    setOpenModal(true)
+    setNovoProduto({
+      nome: produto.nome,
+      quantidade: produto.quantidade,
+      descricao: produto.descricao,
+      preco: produto.preco,
+      id: produto.id,
+    })
+  }
+
+  console.log(novoProduto)
 
   useEffect(() => {
-    if (openModal) {
-      // Limpar os campos quando a caixa de diálogo for aberta
-      setNovoProduto({
-        nome: "",
-        quantidade: "",
-        descricao: "",
-        preco: ""
-      });
-    }
-  }, [openModal]);
+    pegarDadosDoBackEnd()
+  }, [])
 
   return (
     <main>
@@ -69,6 +110,7 @@ const ProductPage = () => {
               <th>Quantidade</th>
               <th>Descrição</th>
               <th>Preço</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -80,15 +122,33 @@ const ProductPage = () => {
                   <td>{produto.quantidade}</td>
                   <td>{produto.descricao}</td>
                   <td>{produto.preco}</td>
+                  <td>
+                    <div className="container-button-add" style={{ margin: 0 }}>
+                      <button
+                        onClick={() => chamadaAoClicarNoBotaoEditar(produto)}
+                        style={{ background: "#0B5ED7" }}
+                      >
+                        Editar
+                      </button>
+                    </div>
+                  </td>
                 </tr>
-              );
+              )
             })}
           </tbody>
         </table>
       </div>
       <Dialog
         open={openModal}
-        onClose={() => setOpenModal(false)}
+        onClose={() => {
+          setOpenModal(false)
+          setNovoProduto({
+            nome: "",
+            quantidade: "",
+            descricao: "",
+            preco: "",
+          })
+        }}
         style={{ padding: "2rem" }}
       >
         <TextField
@@ -127,12 +187,16 @@ const ProductPage = () => {
             setNovoProduto({ ...novoProduto, preco: e.target.value })
           }
         />
-        <Button variant="contained" onClick={enviarDadosParaBackEnd}>
-          Criar
+        <Button
+          style={novoProduto.id ? { background: "#0B5ED7" } : {}}
+          variant="contained"
+          onClick={enviarDadosParaBackEnd}
+        >
+          {novoProduto.id ? "EDITAR" : "CRIAR"}
         </Button>
       </Dialog>
     </main>
-  );
-};
+  )
+}
 
-export default ProductPage;
+export default ProductPage
