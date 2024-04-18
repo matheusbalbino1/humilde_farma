@@ -76,6 +76,21 @@ const ProductPage = () => {
       })
   }
 
+  function deletarProdutoNoBackEnd(id) {
+    fetch(`http://localhost:5000/api/produtos/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(() => {
+        pegarDadosDoBackEnd()
+      })
+      .catch((error) => {
+        console.error("Erro ao deletar produto:", error)
+      })
+  }
+
   function chamadaAoClicarNoBotaoEditar(produto) {
     setOpenModal(true)
     setNovoProduto({
@@ -110,7 +125,7 @@ const ProductPage = () => {
               <th>Quantidade</th>
               <th>Descrição</th>
               <th>Preço</th>
-              <th></th>
+              <th style={{ width: "100px" }}></th>
             </tr>
           </thead>
           <tbody>
@@ -123,12 +138,26 @@ const ProductPage = () => {
                   <td>{produto.descricao}</td>
                   <td>{produto.preco}</td>
                   <td>
-                    <div className="container-button-add" style={{ margin: 0 }}>
+                    <div
+                      className="container-button-add"
+                      style={{
+                        margin: 0,
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        gap: "8px",
+                      }}
+                    >
                       <button
                         onClick={() => chamadaAoClicarNoBotaoEditar(produto)}
-                        style={{ background: "#0B5ED7" }}
+                        style={{ background: "#0B5ED7", margin: 0 }}
                       >
                         Editar
+                      </button>
+                      <button
+                        onClick={() => deletarProdutoNoBackEnd(produto.id)}
+                        style={{ background: "#DC3545", margin: 0 }}
+                      >
+                        Deletar
                       </button>
                     </div>
                   </td>

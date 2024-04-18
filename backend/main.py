@@ -115,7 +115,31 @@ def alterar_produto(id):
 def deletar_produto(id):
     id_do_produto = id
     # CONECTAR AO BANCO DE DADOS E DELETAR O PRODUTO
-    return jsonify("TESTE 231")
+
+    try:
+        # Conectar ao banco de dados
+        conexao = criar_conexao()
+        cursor = conexao.cursor()
+
+        # Inserir novo produto na tabela
+        cursor.execute("DELETE FROM product WHERE id=%s",
+                       (int(id_do_produto),))
+
+        # Commit para salvar as alterações no banco de dados
+        conexao.commit()
+
+        # Retornar uma resposta de sucesso
+        # Código 201 significa Created
+        return jsonify({"mensagem": "Produto deletado com sucesso!"}), 201
+    except Exception as e:
+        # Em caso de erro, fazer rollback e retornar mensagem de erro
+        conexao.rollback()
+        # Código 500 significa Internal Server Error
+        return jsonify({"mensagem": f"Erro ao deletar produto: {str(e)}"}), 500
+    finally:
+        # Fechar o cursor e a conexão, independentemente de ter ocorrido um erro ou não
+        cursor.close()
+        conexao.close()
 
 
 @app.route('/')
