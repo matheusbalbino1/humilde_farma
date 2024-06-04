@@ -66,7 +66,7 @@ def enviar_email_reset_senha(email, token):
     Se você não solicitou uma redefinição de senha, ignore este e-mail.
 
     Atenciosamente,
-    Sua Equipe
+    Humilde farma
     """
     msg.attach(MIMEText(mensagem, 'plain'))
 
