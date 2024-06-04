@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login humild farma</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <h2>Humilde Farma login</h2>
+    <form method="post" action="{{ url_for('auth.login') }}">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <style>
+            /* Estilo para centralizar o conteúdo verticalmente */
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+            /* Estilo para o formulário */
+            form {
+                width: 300px; /* Ajuste conforme necessário */
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+            }
+            /* Estilo para o título */
+            h2 {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Esqueceu a senha</title>
+        </head>
+        <body>
+            <h2>Esqueceu a senha?</h2>
+            <form method="post" action="{{ url_for('auth.forgot_password') }}">
+                <label for="email">Endereço de e-mail:</label><br>
+                <input type="email" id="email" name="email" required><br><br>
+                <input type="submit" value="Enviar e-mail de redefinição de senha">
+            </form>
+        </body>
+        </html>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Login</title>
+            <style>
+                /* Estilo para centralizar o conteúdo verticalmente */
+                body {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                }
+            </style>
+        </head>
+        <body>        
