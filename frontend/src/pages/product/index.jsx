@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 const ProductPage = () => {
   const [openModal, setOpenModal] = useState(false)
   const [dadosBackEnd, setDadosBackEnd] = useState([])
+  const [filtro, setFiltro] = useState("")
   const [novoProduto, setNovoProduto] = useState({
     id: "",
     nome: "",
@@ -113,7 +114,15 @@ const ProductPage = () => {
       <div>
         <h1>Cadastro e controle de produtos</h1>
         <div></div>
-
+        <TextField
+          label="Pesquisar"
+          variant="outlined"
+          style={{ marginBottom: "1rem" }}
+          value={filtro}
+          onChange={(e) =>
+            setFiltro(e.target.value)
+          }
+        />
         <div className="container-button-add">
           <button onClick={() => setOpenModal(true)}>Adicionar produto</button>
         </div>
